@@ -1,0 +1,47 @@
+// Tawseef Hanif
+// Culminating Assignment
+// ICS3U
+// Mr. Radulovic
+
+/*
+ * Body class implements a 2D body with a position, velocity, and mass
+ */
+
+public class Body {
+
+	private Vector velocity;	//velocity
+	private Vector position;	//position
+	private final double mass;	//mass
+	private final double gConstant = 6.67e-11; //gravitational constant
+	
+	//body constructor
+	public Body (Vector velocity, Vector position, double mass) {
+		this.velocity = velocity;
+		this.position = position;
+		this.mass = mass;
+	}
+	
+	//applies force f for time in seconds
+	public void Move(Vector force, double time) {
+		Vector a = force.times(1/mass);
+		velocity = velocity.plus(a.times(time));
+		position = position.plus(velocity.times(time));
+	}
+	
+	//returns a vector in the direction of body b with a magnitude of totalForce
+	public Vector forceFrom (Body b) {
+		Body a = this;
+		Vector delta = b.position.minus(a.position); //vector that defines the distance between two bodies as a vector
+		double distance = delta.magnitude(); //distance between the two bodies
+		double totalForce = (gConstant * a.mass * b.mass) / (distance*distance); //total force between two bodies
+		return delta.direction().times(totalForce); 
+		}
+	
+	//returns the position 
+	public double[] getPosition() {
+		return this.position.components();
+	}
+	
+	
+	
+}
