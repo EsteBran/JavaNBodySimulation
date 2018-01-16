@@ -11,18 +11,20 @@ public class Body {
 
 	private Vector velocity;	//velocity
 	private Vector position;	//position
+	private final double radius;
 	private final double mass;	//mass
 	private final double gConstant = 6.67e-11; //gravitational constant
 	
 	//body constructor
-	public Body (Vector velocity, Vector position, double mass) {
+	public Body (Vector velocity, Vector position, double mass, double radius) {
 		this.velocity = velocity;
 		this.position = position;
 		this.mass = mass;
+		this.radius = radius;
 	}
 	
-	//applies force f for time in seconds
-	public void Move(Vector force, double time) {
+	//applies force f for time in seconds, moving the body a proportional amount
+	public void move(Vector force, double time) {
 		Vector a = force.times(1/mass);
 		velocity = velocity.plus(a.times(time));
 		position = position.plus(velocity.times(time));
@@ -42,6 +44,16 @@ public class Body {
 		return this.position.components();
 	}
 	
+	public double[] getVelocity() {
+		return this.velocity.components();
+	}
 	
+	public double getMass() {
+		return this.mass;
+	}
+	
+	public double getRadius() {
+		return this.radius;
+	}
 	
 }

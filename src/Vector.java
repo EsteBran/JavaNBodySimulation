@@ -99,7 +99,7 @@ public class Vector {
     }
 	
     
-    //for testing
+    /*for testing
     public static void main(String[] args) {
     	double[] xdata = {1.0, 2.0};
     	double[] ydata = {3.0, 4.0};
@@ -114,5 +114,5 @@ public class Vector {
     	System.out.println(Arrays.toString(x.times(15).data));
     	System.out.println(Arrays.toString(x.components()));
     }
- 		
+ 	*/	
 }
