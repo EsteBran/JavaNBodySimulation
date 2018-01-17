@@ -8,15 +8,20 @@
  * positions 60 times a second using the Body class. Finally, it shows the positions of the planets 60 times a second.
  */
 
+
+import java.util.Arrays;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.*;
 import javafx.stage.Stage;
+import javafx.scene.text.*;
 
-@SuppressWarnings("restriction")
+
 public class GUI extends Application {
 	private int WIDTH = 800;
 	private int HEIGHT = 600;
@@ -24,7 +29,9 @@ public class GUI extends Application {
 	private double elapsedTime;	// in seconds
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private Universe universe;
+	private Universe universe; 
+	private Body[] planets;
+	private double gridX, gridY; //the scaling factor for transferring calculations from planets with the mass of earth and showing them on this screen
 	
 	
 	public static void main(String[] args) {
@@ -68,7 +75,16 @@ public class GUI extends Application {
 	
 	public void drawScene(GraphicsContext gc)
 	{
-		// draw the current state of your map here
+		planets = universe.getBodies();
+		
+		double[] velocity = planets[0].getVelocity();
+		gridX = Math.abs(velocity[1]/WIDTH);
+		
+		gc.setFill(Color.BLACK);
+		for (int i = 0; i < planets.length; i++) {
+			
+		}
+		
 		
 	}
 	
@@ -76,5 +92,9 @@ public class GUI extends Application {
 	{
 		elapsedTime += deltaT;
 		drawScene(gc);
+		universe.updateUniverse(deltaT);
+		Body[] bodies = universe.getBodies();
+		System.out.println(Arrays.toString(bodies[0].getVelocity())+ " " + Arrays.toString(bodies[1].getVelocity()));
+		
 	}
 }
