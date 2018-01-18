@@ -19,7 +19,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
 import javafx.stage.Stage;
-import javafx.scene.text.*;
+
 
 
 public class GUI extends Application {
@@ -36,6 +36,7 @@ public class GUI extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);	// sets up the app and then calls start()
+		
 	}
 
 	@Override
@@ -77,13 +78,20 @@ public class GUI extends Application {
 	{
 		planets = universe.getBodies();
 		
-		double[] velocity = planets[0].getVelocity();
-		gridX = Math.abs(velocity[1]/WIDTH);
+		double[] position = planets[0].getPosition();
+		gridX = 10e8;
+		gridY = 10e8;
 		
-		gc.setFill(Color.BLACK);
+		gc.setStroke(Color.BLACK);
 		for (int i = 0; i < planets.length; i++) {
-			
-		}
+			double[] position1 = planets[i].getPosition();
+			double xPos = position[0]/gridX;
+			double yPos = position[1]/gridY;
+			double radius = planets[i].getRadius()/gridX;
+			//System.out.println(xPos + " "+ yPos);
+			gc.strokeOval(xPos, yPos, radius, radius);
+			}
+		
 		
 		
 	}
@@ -94,7 +102,7 @@ public class GUI extends Application {
 		drawScene(gc);
 		universe.updateUniverse(deltaT);
 		Body[] bodies = universe.getBodies();
-		System.out.println(Arrays.toString(bodies[0].getVelocity())+ " " + Arrays.toString(bodies[1].getVelocity()));
+		//System.out.println(Arrays.toString(bodies[0].getVelocity())+ " " + Arrays.toString(bodies[1].getVelocity()));
 		
 	}
 }

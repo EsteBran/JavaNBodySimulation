@@ -20,7 +20,7 @@ public class Universe {
 
 	public Universe() {
 
-		File universe = new File("resources/Bodies1.txt");
+		File universe = new File("resources/Bodies2.txt");
 
 		try {
 
@@ -50,7 +50,7 @@ public class Universe {
 			scan.close();
 			//print for testing 
 			for (int i = 0; i < bodies.length; i++) {
-				System.out.println(Arrays.toString(bodies[i].getPosition()) +" "+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() +" "+ bodies[i].getRadius());
+				//System.out.println(Arrays.toString(bodies[i].getPosition()) +" "+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() +" "+ bodies[i].getRadius());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -79,8 +79,10 @@ public class Universe {
 		// moves the bodies
 		for (int i = 0; i < n; i++) {
 			bodies[i].move(f[i], dt);
+			System.out.println(Arrays.toString(f[i].components()));
 		}
-
+		
+	
 	}
 	
 	public Body[] getBodies() {
