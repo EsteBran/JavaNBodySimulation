@@ -39,6 +39,17 @@ public class Body {
 		return delta.direction().times(totalForce); 
 		}
 	
+	//detects collision between two bodies, if true creates a new body with the mass of the two bodies
+	public boolean detectCollision(Body b) {
+		Body a = this;
+		Vector delta = b.position.minus(a.position);
+		double distance = delta.magnitude();
+		if (distance <= (a.radius+b.radius)) {
+			return true;
+		}
+		return false;
+	}
+	
 	//returns the position 
 	public double[] getPosition() {
 		return this.position.components();

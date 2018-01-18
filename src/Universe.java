@@ -30,8 +30,7 @@ public class Universe {
 			// this will be the number of bodies
 			n = scan.nextInt();
 			
-			double radius = scan.nextDouble(); //radius of the planet, will be used in the GUI class 
-
+			
 			// reads the n bodies and their velocity and positions
 			bodies = new Body[n];
 			for (int i = 0; i < n; i++) {
@@ -44,13 +43,21 @@ public class Universe {
 				double[] velocityData = { xVel, yVel };
 				Vector position = new Vector(positionData);
 				Vector velocity = new Vector(velocityData);
+				
+				double radius = 0;
+				if (mass >= 1e30) radius = 100;
+				else if (mass >= 1e28) radius = 80;
+				else if (mass >= 1e26) radius = 40;
+				else if (mass >= 1e24) radius = 20;
+				else if (mass >= 1e22) radius = 10;
+				else if (mass >= 1e20) radius = 5;
 				bodies[i] = new Body(position, velocity, mass, radius);
 
 			}
 			scan.close();
 			//print for testing 
 			for (int i = 0; i < bodies.length; i++) {
-				//System.out.println(Arrays.toString(bodies[i].getPosition()) +" "+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() +" "+ bodies[i].getRadius());
+				System.out.println(Arrays.toString(bodies[i].getPosition()) +" "+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() +" "+ bodies[i].getRadius());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -78,8 +85,9 @@ public class Universe {
 
 		// moves the bodies
 		for (int i = 0; i < n; i++) {
+			
 			bodies[i].move(f[i], dt);
-			System.out.println(Arrays.toString(f[i].components()));
+			
 		}
 		
 	
@@ -88,5 +96,7 @@ public class Universe {
 	public Body[] getBodies() {
 		return this.bodies;
 	}
+	
+	
 	
 }

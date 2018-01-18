@@ -26,7 +26,7 @@ public class GUI extends Application {
 	private int WIDTH = 800;
 	private int HEIGHT = 600;
 	private long oldTime;
-	private double elapsedTime;	// in seconds
+	private double elapsedTime;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private Universe universe; 
@@ -67,7 +67,7 @@ public class GUI extends Application {
 		timer.start();	// once this timer is started it will call the onUpdate()
 						// method once every 1/60 of a second
 		
-		stage.setTitle("Robot Navigator");
+		stage.setTitle("NBody");
 		// Set the scene for this stage
 		stage.setScene(scene);
 		// Finally, show the primary stage
@@ -78,17 +78,21 @@ public class GUI extends Application {
 	{
 		planets = universe.getBodies();
 		
-		double[] position = planets[0].getPosition();
+		//paints the canvas white every frame so that the planet image doesn't look like a line
+		gc.setFill(Color.WHITE);
+		gc.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		
 		gridX = 10e8;
 		gridY = 10e8;
 		
+		//iterates through the planets and draws one planet for each planet in the array
 		gc.setStroke(Color.BLACK);
 		for (int i = 0; i < planets.length; i++) {
-			double[] position1 = planets[i].getPosition();
-			double xPos = position[0]/gridX;
-			double yPos = position[1]/gridY;
-			double radius = planets[i].getRadius()/gridX;
-			//System.out.println(xPos + " "+ yPos);
+			double[] position = planets[i].getPosition();
+			double xPos = WIDTH/2 + position[0]/gridX;
+			double yPos = HEIGHT/2 + position[1]/gridY;
+			double radius = planets[i].getRadius();
 			gc.strokeOval(xPos, yPos, radius, radius);
 			}
 		
@@ -100,9 +104,7 @@ public class GUI extends Application {
 	{
 		elapsedTime += deltaT;
 		drawScene(gc);
-		universe.updateUniverse(deltaT);
-		Body[] bodies = universe.getBodies();
-		//System.out.println(Arrays.toString(bodies[0].getVelocity())+ " " + Arrays.toString(bodies[1].getVelocity()));
+		universe.updateUniverse(1500000*deltaT);
 		
 	}
 }
