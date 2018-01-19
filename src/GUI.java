@@ -10,6 +10,7 @@
 
 
 import java.util.Arrays;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -31,6 +32,8 @@ public class GUI extends Application {
 	private GraphicsContext gc;
 	private Universe universe; 
 	private Body[] planets;
+	private BodyGenerator bodyGen;
+	private Body[] randPlanets;
 	private double gridX, gridY; //the scaling factor for transferring calculations from planets with the mass of earth and showing them on this screen
 	
 	
@@ -43,6 +46,7 @@ public class GUI extends Application {
 	public void start(Stage stage) throws Exception {
 		
 		universe = new Universe();
+		bodyGen = new BodyGenerator();
 		canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		
@@ -76,20 +80,32 @@ public class GUI extends Application {
 	
 	public void drawScene(GraphicsContext gc)
 	{
-		planets = universe.getBodies();
-		
-		//paints the canvas white every frame so that the planet image doesn't look like a line
+		//planets = universe.getBodies();
+		randPlanets = bodyGen.getBodies();
+		//paints the canvas white every frame so that the planet image doesn't overlay itself every successive time it's drawn
 		gc.setFill(Color.WHITE);
 		gc.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		
+		 //scaling factor, everyting is scaled down by a factor of this so that it can be displayed on screen
 		gridX = 10e8;
 		gridY = 10e8;
 		
+		
+		
 		//iterates through the planets and draws one planet for each planet in the array
-		gc.setStroke(Color.BLACK);
+	/*	gc.setStroke(Color.BLACK);
 		for (int i = 0; i < planets.length; i++) {
 			double[] position = planets[i].getPosition();
+			double xPos = WIDTH/2 + position[0]/gridX;
+			double yPos = HEIGHT/2 + position[1]/gridY;
+			double radius = planets[i].getRadius();
+			gc.strokeOval(xPos, yPos, radius, radius);
+			}*/
+		
+		
+		gc.setStroke(Color.BLUE);
+		for (int i = 0; i < randPlanets.length; i++) {
+			double[] position = randPlanets[i].getPosition();
 			double xPos = WIDTH/2 + position[0]/gridX;
 			double yPos = HEIGHT/2 + position[1]/gridY;
 			double radius = planets[i].getRadius();

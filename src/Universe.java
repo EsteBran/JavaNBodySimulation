@@ -16,21 +16,18 @@ public class Universe {
 
 	private int n; // number of bodies/planets
 	private Body[] bodies; // array of bodies
-	
 
 	public Universe() {
 
-		File universe = new File("resources/Bodies2.txt");
+		File universe = new File("resources/Bodies1.txt");
 
 		try {
 
 			Scanner scan = new Scanner(universe);
 
-			
 			// this will be the number of bodies
 			n = scan.nextInt();
-			
-			
+
 			// reads the n bodies and their velocity and positions
 			bodies = new Body[n];
 			for (int i = 0; i < n; i++) {
@@ -43,21 +40,30 @@ public class Universe {
 				double[] velocityData = { xVel, yVel };
 				Vector position = new Vector(positionData);
 				Vector velocity = new Vector(velocityData);
-				
+
+				// sets radius according to mass, introduces more variety to the universe
 				double radius = 0;
-				if (mass >= 1e30) radius = 100;
-				else if (mass >= 1e28) radius = 80;
-				else if (mass >= 1e26) radius = 40;
-				else if (mass >= 1e24) radius = 20;
-				else if (mass >= 1e22) radius = 10;
-				else if (mass >= 1e20) radius = 5;
+				if (mass >= 1e30)
+					radius = 100;
+				else if (mass >= 1e28)
+					radius = 80;
+				else if (mass >= 1e26)
+					radius = 40;
+				else if (mass >= 1e24)
+					radius = 20;
+				else if (mass >= 1e22)
+					radius = 10;
+				else if (mass >= 1e20)
+					radius = 5;
 				bodies[i] = new Body(position, velocity, mass, radius);
 
 			}
 			scan.close();
-			//print for testing 
+			// print for testing
 			for (int i = 0; i < bodies.length; i++) {
-				System.out.println(Arrays.toString(bodies[i].getPosition()) +" "+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() +" "+ bodies[i].getRadius());
+				System.out.println(
+						Arrays.toString(bodies[i].getPosition()) + " " + Arrays.toString(bodies[i].getVelocity()) + " "
+								+ bodies[i].getMass() + " " + bodies[i].getRadius());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -85,18 +91,36 @@ public class Universe {
 
 		// moves the bodies
 		for (int i = 0; i < n; i++) {
-			
+
 			bodies[i].move(f[i], dt);
-			
+
+			//detects if two bodies collide and combines the bodies to produce a bigger one
+			for (int j = 0; j < n - 1; j++)
+				if (bodies[j].detectCollision(bodies[j + 1])) {
+					double mass1 = bodies[j].getMass();
+					double mass2 = bodies[j + 1].getMass();
+					System.out.println("collission detected" +" "+ mass1 +" "+ mass2);
+					
+					if (mass1 > mass2) {
+						bodies[j+1].setMass(0);
+						bodies[j+1].setRadius(0);
+						bodies[j].setMass(mass1+mass2);
+						System.out.println(" "+bodies[j].getMass()+" "+bodies[j+1].getMass());
+					}
+					else {
+						bodies[j].setMass(0);
+						bodies[j].setRadius(0);
+						bodies[j+1].setMass(mass1+mass2);
+						System.out.println(" "+bodies[j+1].getMass()+ " "+bodies[j].getMass());
+
+					}
+				}
 		}
-		
-	
+
 	}
-	
+
 	public Body[] getBodies() {
 		return this.bodies;
 	}
-	
-	
-	
+
 }

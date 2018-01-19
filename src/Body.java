@@ -11,8 +11,8 @@ public class Body {
 
 	private Vector velocity;	//velocity
 	private Vector position;	//position
-	private final double radius;
-	private final double mass;	//mass
+	private double radius;
+	private double mass;	//mass
 	private final double gConstant = 6.67e-11; //gravitational constant
 	
 	//body constructor
@@ -44,7 +44,8 @@ public class Body {
 		Body a = this;
 		Vector delta = b.position.minus(a.position);
 		double distance = delta.magnitude();
-		if (distance <= (a.radius+b.radius)) {
+		if (distance <= ((a.radius+b.radius)*3e8)) {
+			
 			return true;
 		}
 		return false;
@@ -67,6 +68,12 @@ public class Body {
 		return this.radius;
 	}
 	
+	public void setMass(double massF) {
+		this.mass = massF;
+	}
 	
+	public void setRadius(double radiusF) {
+		this.radius = radiusF;
+	}
 	
 }
