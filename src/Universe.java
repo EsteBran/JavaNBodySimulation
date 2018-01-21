@@ -61,7 +61,7 @@ public class Universe {
 			scan.close();
 			// print for testing
 			for (int i = 0; i < bodies.length; i++) {
-				System.out.println(
+				System.out.println("position velocity mass radius " +
 						Arrays.toString(bodies[i].getPosition()) + " " + Arrays.toString(bodies[i].getVelocity()) + " "
 								+ bodies[i].getMass() + " " + bodies[i].getRadius());
 			}

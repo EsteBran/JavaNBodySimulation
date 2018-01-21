@@ -20,8 +20,6 @@
 
 
 
-import java.util.Arrays;
-
 public class Vector {
 	
 	private int m;			//number of components in the vector

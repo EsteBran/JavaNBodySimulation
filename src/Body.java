@@ -44,7 +44,7 @@ public class Body {
 		Body a = this;
 		Vector delta = b.position.minus(a.position);
 		double distance = delta.magnitude();
-		if (distance <= ((a.radius+b.radius)*3e8)) {
+		if (distance <= ((a.radius+b.radius)*1e8)) {
 			
 			return true;
 		}
