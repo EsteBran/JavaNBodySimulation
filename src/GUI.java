@@ -46,7 +46,7 @@ public class GUI extends Application {
 	public void start(Stage stage) throws Exception {
 		
 		universe = new Universe();
-		bodyGen = new BodyGenerator();
+		bodyGen = new BodyGenerator(5);
 		canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
 		
@@ -80,7 +80,7 @@ public class GUI extends Application {
 	
 	public void drawScene(GraphicsContext gc)
 	{
-		//planets = universe.getBodies();
+		planets = universe.getBodies();
 		randPlanets = bodyGen.getBodies();
 		//paints the canvas white every frame so that the planet image doesn't overlay itself every successive time it's drawn
 		gc.setFill(Color.WHITE);
@@ -93,22 +93,23 @@ public class GUI extends Application {
 		
 		
 		//iterates through the planets and draws one planet for each planet in the array
-	/*	gc.setStroke(Color.BLACK);
+		gc.setStroke(Color.BLACK);
 		for (int i = 0; i < planets.length; i++) {
 			double[] position = planets[i].getPosition();
 			double xPos = WIDTH/2 + position[0]/gridX;
 			double yPos = HEIGHT/2 + position[1]/gridY;
 			double radius = planets[i].getRadius();
 			gc.strokeOval(xPos, yPos, radius, radius);
-			}*/
+			}
 		
 		
+		//draws the random planets
 		gc.setStroke(Color.BLUE);
 		for (int i = 0; i < randPlanets.length; i++) {
 			double[] position = randPlanets[i].getPosition();
 			double xPos = WIDTH/2 + position[0]/gridX;
 			double yPos = HEIGHT/2 + position[1]/gridY;
-			double radius = planets[i].getRadius();
+			double radius = randPlanets[i].getRadius();
 			gc.strokeOval(xPos, yPos, radius, radius);
 			}
 		
