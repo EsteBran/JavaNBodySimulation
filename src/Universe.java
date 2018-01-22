@@ -14,12 +14,12 @@ import java.util.Scanner;
  */
 public class Universe {
 
-	private int n; // number of bodies/planets
+	private int n; // number of bodies/planet
 	private Body[] bodies; // array of bodies
 
 	public Universe() {
 
-		File universe = new File("resources/Bodies1.txt");
+		File universe = new File("resources/Bodies2.txt");
 
 		try {
 

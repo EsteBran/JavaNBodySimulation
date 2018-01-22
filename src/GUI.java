@@ -9,10 +9,10 @@
  */
 
 import javafx.scene.control.Button;
-
+import javafx.scene.input.MouseEvent;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-
+import javafx.event.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -23,7 +23,7 @@ import javafx.scene.paint.*;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-	private int WIDTH = 1000;
+	private int WIDTH = 800;
 	private int HEIGHT = 800;
 	private long oldTime;
 	private double elapsedTime;
@@ -42,7 +42,7 @@ public class GUI extends Application {
 	private double gridX = 10e8, gridY = 10e8; // the scaling factor for transferring calculations from planets with the
 												// mass of earth and showing them on this screen
 	private int t = 1500000; // time scale
-	private boolean isRandom;
+	private boolean isRandom; //boolean that checks if user wants to produce random planets or use premade ones
 
 	public static void main(String[] args) {
 		launch(args); // sets up the app and then calls start()
@@ -51,10 +51,10 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-
+			
 		// initializes the universe and bodygenerator class
 		universe = new Universe();
-		bodyGen = new BodyGenerator(5);
+		bodyGen = new BodyGenerator(1);
 
 		canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
@@ -91,6 +91,13 @@ public class GUI extends Application {
 		stage.setTitle("NBody Simulation");
 		// Set the scene for this stage
 		stage.setScene(scene2);
+		
+		root.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				;
+			}
+		});
 
 		// if start button is pressed starts simulation with premade
 		start.setOnAction(new EventHandler<ActionEvent>() {
