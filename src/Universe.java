@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /*
  * Universe Class
- * Reads a text file of the bodies in the universe and parses it into planets, their masses, and their positions
+ * Reads a text file of the bodies in the universe and parses it into planets, their masses, and their positions. Radius is calculated via mass
  */
 public class Universe {
 
@@ -61,9 +61,9 @@ public class Universe {
 			scan.close();
 			// print for testing
 			for (int i = 0; i < bodies.length; i++) {
-				System.out.println("position velocity mass radius " +
-						Arrays.toString(bodies[i].getPosition()) + " " + Arrays.toString(bodies[i].getVelocity()) + " "
-								+ bodies[i].getMass() + " " + bodies[i].getRadius());
+				System.out.println("position velocity mass radius " + Arrays.toString(bodies[i].getPosition()) + " "
+						+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() + " "
+						+ bodies[i].getRadius());
 			}
 
 		} catch (FileNotFoundException e) {
@@ -94,27 +94,6 @@ public class Universe {
 
 			bodies[i].move(f[i], dt);
 
-			//detects if two bodies collide and combines the bodies to produce a bigger one
-			for (int j = 0; j < n - 1; j++)
-				if (bodies[j].detectCollision(bodies[j + 1])) {
-					double mass1 = bodies[j].getMass();
-					double mass2 = bodies[j + 1].getMass();
-					System.out.println("collission detected" +" "+ mass1 +" "+ mass2);
-					
-					if (mass1 > mass2) {
-						bodies[j+1].setMass(0);
-						bodies[j+1].setRadius(0);
-						bodies[j].setMass(mass1+mass2);
-						System.out.println(" "+bodies[j].getMass()+" "+bodies[j+1].getMass());
-					}
-					else {
-						bodies[j].setMass(0);
-						bodies[j].setRadius(0);
-						bodies[j+1].setMass(mass1+mass2);
-						System.out.println(" "+bodies[j+1].getMass()+ " "+bodies[j].getMass());
-
-					}
-				}
 		}
 
 	}

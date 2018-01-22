@@ -4,7 +4,9 @@
 // Mr. Radulovic
 
 /*
- * Body class implements a 2D body with a position, velocity, and mass
+ * Body class implements a 2D body with a position, velocity, and mass.
+ * the forceFrom method calculates force between two bodies using newton's law of gravity given two bodies, their masses, and their positions
+ * the move method calculates the velocity of a planet given a force vector and time 
  */
 
 public class Body {
@@ -38,19 +40,7 @@ public class Body {
 		double totalForce = (gConstant * a.mass * b.mass) / (distance*distance); //total force between two bodies
 		return delta.direction().times(totalForce); 
 		}
-	
-	//detects collision between two bodies, if true creates a new body with the mass of the two bodies
-	public boolean detectCollision(Body b) {
-		Body a = this;
-		Vector delta = b.position.minus(a.position);
-		double distance = delta.magnitude();
-		if (distance <= ((a.radius+b.radius)*1e8)) {
-			
-			return true;
-		}
-		return false;
-	}
-	
+
 	//returns the position 
 	public double[] getPosition() {
 		return this.position.components();
@@ -68,12 +58,5 @@ public class Body {
 		return this.radius;
 	}
 	
-	public void setMass(double massF) {
-		this.mass = massF;
-	}
-	
-	public void setRadius(double radiusF) {
-		this.radius = radiusF;
-	}
 	
 }

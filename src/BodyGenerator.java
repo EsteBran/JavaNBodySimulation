@@ -63,30 +63,15 @@ public class BodyGenerator {
 	public BodyGenerator(int n) {
 		nBodies = n;
 		this.bodies = new Body[nBodies];
-		double mass1 = this.getMass();
-		Vector position1 = this.getPos();
-		Vector velocity1 = this.getVel();
-		// sets radius according to mass, introduces more variety to the universe
-		double radius1 = 0;
-		if (mass1 >= 1e40)
-			radius1 = 100;
-		else if (mass1 >= 1e28)
-			radius1 = 80;
-		else if (mass1 >= 1e26)
-			radius1 = 40;
-		else if (mass1 >= 1e24)
-			radius1 = 20;
-		else if (mass1 >= 1e22)
-			radius1 = 10;
-		else if (mass1 >= 1e20)
-			radius1 = 5;
-		this.bodies[0] = new Body(velocity1, position1, mass1, radius1);
-		
-		for (int i = 1; i < nBodies; i++) {
-			
-			double mass = this.getMass();
-			Vector position = this.getPos();
-			Vector velocity = this.getVel();
+		double mass = this.getMass();
+		Vector position = this.getPos();
+		Vector velocity = this.getVel();
+
+		for (int i = 0; i < nBodies; i++) {
+
+			mass = this.getMass();
+			position = this.getPos();
+			velocity = this.getVel();
 			// sets radius according to mass, introduces more variety to the universe
 			double radius = 0;
 			if (mass >= 1e40)
@@ -102,10 +87,7 @@ public class BodyGenerator {
 			else if (mass >= 1e20)
 				radius = 5;
 			this.bodies[i] = new Body(velocity, position, mass, radius);
-			
-			if (this.bodies[i].detectCollision(bodies[i-1])) {
-				this.bodies[i] = new Body(velocity, position, mass, radius);
-			}
+
 		}
 
 	}
@@ -132,29 +114,7 @@ public class BodyGenerator {
 
 		// moves the bodies
 		for (int i = 0; i < nBodies; i++) {
-
 			bodies[i].move(f[i], dt);
-
-			// detects if two bodies collide and combines the bodies to produce a bigger one
-			for (int j = 0; j < nBodies - 1; j++)
-				if (bodies[j].detectCollision(bodies[j + 1])) {
-					double mass1 = bodies[j].getMass();
-					double mass2 = bodies[j + 1].getMass();
-					System.out.println("collission detected" + " " + mass1 + " " + mass2);
-
-					if (mass1 > mass2) {
-						bodies[j + 1].setMass(0);
-						bodies[j + 1].setRadius(0);
-						bodies[j].setMass(mass1 + mass2);
-						System.out.println(" " + bodies[j].getMass() + " " + bodies[j + 1].getMass());
-					} else {
-						bodies[j].setMass(0);
-						bodies[j].setRadius(0);
-						bodies[j + 1].setMass(mass1 + mass2);
-						System.out.println(" " + bodies[j + 1].getMass() + " " + bodies[j].getMass());
-
-					}
-				}
 		}
 
 	}
