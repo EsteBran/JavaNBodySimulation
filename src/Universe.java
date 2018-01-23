@@ -1,8 +1,3 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Scanner;
-
 // Tawseef Hanif
 // Culminating Assignment
 // ICS3U
@@ -10,24 +5,45 @@ import java.util.Scanner;
 
 /*
  * Universe Class
- * Reads a text file of the bodies in the universe and parses it into planets, their masses, and their positions. Radius is calculated via mass
+ * Reads a text file of the bodies in the universe and parses it into planets, 
+ * their masses, and their positions. 
+ * Radius is calculated via mass
  */
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
 public class Universe {
 
 	private int n; // number of bodies/planet
 	private Body[] bodies; // array of bodies
-
+	Random rand = new Random(); 
+	
 	public Universe() {
-
-		File universe = new File("resources/Bodies2.txt");
-
+		File universe = null;
+		//generates a random integer between 1 and 4, chooses a different file based on which integer is chosen, each file contains a diferent system
+		int number = rand.nextInt(3)+1; 
+		if (number == 1) {
+			universe = new File("resources/Bodies1.txt");
+		}
+		else if (number == 2) {
+			universe = new File("resources/Bodies2.txt");
+		}
+		else if (number == 3) {
+			universe = new File("resources/Bodies3.txt");
+		}
+		else if (number == 4) {
+			universe = new File("resources/Bodies4.txt");
+		}
 		try {
 
 			Scanner scan = new Scanner(universe);
-
 			// this will be the number of bodies
 			n = scan.nextInt();
-
+			
 			// reads the n bodies and their velocity and positions
 			bodies = new Body[n];
 			for (int i = 0; i < n; i++) {
@@ -56,15 +72,8 @@ public class Universe {
 				else if (mass >= 1e20)
 					radius = 5;
 				bodies[i] = new Body(position, velocity, mass, radius);
-
 			}
 			scan.close();
-			// print for testing
-			for (int i = 0; i < bodies.length; i++) {
-				System.out.println("position velocity mass radius " + Arrays.toString(bodies[i].getPosition()) + " "
-						+ Arrays.toString(bodies[i].getVelocity()) + " " + bodies[i].getMass() + " "
-						+ bodies[i].getRadius());
-			}
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -91,9 +100,7 @@ public class Universe {
 
 		// moves the bodies
 		for (int i = 0; i < n; i++) {
-
 			bodies[i].move(f[i], dt);
-
 		}
 
 	}

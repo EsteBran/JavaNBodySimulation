@@ -1,6 +1,3 @@
-import java.util.Arrays;
-import java.util.Random;
-
 // Tawseef Hanif
 // Culminating Assignment
 // ICS3U
@@ -8,7 +5,13 @@ import java.util.Random;
 
 /*
  * creates a set number of bodies with random positions, velocities, and masses
+ * the method updateUniverse updates the all the bodies in the class by one step
+ * Overall same theory as the Universe class except this time every number is randomly generated
  */
+
+import java.util.Random;
+
+
 public class BodyGenerator {
 
 	private Random rand = new Random();
@@ -16,9 +19,9 @@ public class BodyGenerator {
 	private Body[] bodies;
 	private double randMass;
 
-	// creates a random velocity
+	// creates a random velocity within bounds (10e1-10e3)
 	public Vector getVel() {
-		int i = rand.nextInt(4) + 4;
+		int i = rand.nextInt(3) + 1;
 		int j = 0;
 		if (rand.nextBoolean()) {
 			j = -1;
@@ -32,9 +35,9 @@ public class BodyGenerator {
 		return randVel;
 	}
 
-	// creates a random position
+	// creates a random position within bounds (10e7-10e11)
 	public Vector getPos() {
-		int i = rand.nextInt(5) + 7;
+		int i = rand.nextInt(4) + 7;
 		int j = 0;
 		if (rand.nextBoolean()) {
 			j = -1;
@@ -47,17 +50,13 @@ public class BodyGenerator {
 		Vector randPos = new Vector(randPosData);
 		return randPos;
 	}
-
+	//returns a random mass within a bound (10e20-10e60)
 	public double getMass() {
 		int i = rand.nextInt(40) + 20;
 		randMass = (Math.pow(10, i) * rand.nextDouble());
 		return randMass;
 	}
 
-	public int getRandN() {
-		int n = rand.nextInt(16);
-		return n;
-	}
 
 	// constructor for BodyGenerator, generates n random bodies
 	public BodyGenerator(int n) {
@@ -91,36 +90,13 @@ public class BodyGenerator {
 		}
 
 	}
-
+	//returns the body array
 	public Body[] getBodies() {
 		return this.bodies;
-		
-	}
-	
-	public void addBody(double x, double y) {
-		this.bodies = new Body[nBodies + 1];
-		double[] posData = {x, y};
-		double mass = this.getMass();
-		Vector position = new Vector(posData);
-		Vector velocity = this.getVel();
-		// sets radius according to mass, introduces more variety to the universe
-					double radius = 0;
-					if (mass >= 1e40)
-						radius = 100;
-					else if (mass >= 1e28)
-						radius = 80;
-					else if (mass >= 1e26)
-						radius = 40;
-					else if (mass >= 1e24)
-						radius = 20;
-					else if (mass >= 1e22)
-						radius = 10;
-					else if (mass >= 1e20)
-						radius = 5;
-		this.bodies[nBodies + 1] = new Body(velocity, position, mass, radius);
-		
+
 	}
 
+	//calculates the forces and moves all the bodies a corresponding amount
 	public void updateUniverse(double dt) {
 		// initialize the forces to zero
 		Vector[] f = new Vector[nBodies];

@@ -10,7 +10,7 @@
  */
 
 public class Body {
-
+	
 	private Vector velocity;	//velocity
 	private Vector position;	//position
 	private double radius;
@@ -24,12 +24,34 @@ public class Body {
 		this.mass = mass;
 		this.radius = radius;
 	}
+	//if planet hits the bounds of the window bounces back
+	public void bounceOffVerticalWall() {
+
+		this.setVelocity(-velocity.components()[0], this.velocity.components()[1]);
+	}
+	//if planet hits the bounds of the window bounces back
+	public void bounceOffHorizontalWall() {
+		
+		this.setVelocity(this.velocity.components()[0], -velocity.components()[1]);
+	}
 	
 	//applies force f for time in seconds, moving the body a proportional amount
 	public void move(Vector force, double time) {
 		Vector a = force.times(1/mass);
 		velocity = velocity.plus(a.times(time));
 		position = position.plus(velocity.times(time));
+		
+		//if position goes out of bounds of the window it bounces back
+		if (position.components()[0] >= 4e11 - radius*10e8) {
+			bounceOffVerticalWall();
+		}
+		if (position.components()[0] <= -4e11) {
+			bounceOffVerticalWall();
+		}
+		if (Math.abs(position.components()[1]) >= 4e11) {
+			bounceOffHorizontalWall();
+		}
+		
 	}
 	
 	//returns a vector in the direction of body b with a magnitude of totalForce
@@ -45,17 +67,23 @@ public class Body {
 	public double[] getPosition() {
 		return this.position.components();
 	}
-	
+	//gets velocity
 	public double[] getVelocity() {
 		return this.velocity.components();
 	}
-	
+	//gets mass
 	public double getMass() {
 		return this.mass;
 	}
-	
+	//gets radius
 	public double getRadius() {
 		return this.radius;
+	}
+	
+	//sets the velocity to (x,y), useed in the bounceOffWall methods
+	public void setVelocity(double x, double y) {
+		double[] velocityData = {x,y};
+		this.velocity = new Vector(velocityData);
 	}
 	
 	

@@ -9,10 +9,9 @@
  */
 
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextField;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import javafx.event.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,6 +19,9 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -34,15 +36,18 @@ public class GUI extends Application {
 	private Button start;
 	private Button exit;
 	private Button random;
+	private Button back;
 
+	// universe, its planets, bodygenerator, its planets
 	private Universe universe;
 	private Body[] planets;
 	private BodyGenerator bodyGen;
 	private Body[] randPlanets;
 	private double gridX = 10e8, gridY = 10e8; // the scaling factor for transferring calculations from planets with the
 												// mass of earth and showing them on this screen
-	private int t = 1500000; // time scale
-	private boolean isRandom; //boolean that checks if user wants to produce random planets or use premade ones
+	private double t = 1500000; // time scale
+	private boolean isRandom; // boolean that checks if user wants to produce random planets or use premade
+								// ones
 
 	public static void main(String[] args) {
 		launch(args); // sets up the app and then calls start()
@@ -51,10 +56,6 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
-			
-		// initializes the universe and bodygenerator class
-		universe = new Universe();
-		bodyGen = new BodyGenerator(1);
 
 		canvas = new Canvas(WIDTH, HEIGHT);
 		gc = canvas.getGraphicsContext2D();
@@ -74,30 +75,48 @@ public class GUI extends Application {
 		exit.setLayoutX(WIDTH / 2);
 		exit.setLayoutY(HEIGHT / 2 + 50);
 
+		// goes back to game menu
+		back = new Button("Back");
+		back.setLayoutX(50);
+		back.setLayoutY(750);
+
+		// takes in an int and generates that many planets
+		TextField input = new TextField();
+		input.setLayoutX(WIDTH / 2 - 160);
+		input.setLayoutY(HEIGHT / 2);
+
+		Text title = new Text("N BODY SIMULATOR ");
+		title.setFill(Color.BLACK);
+		title.setFont(Font.font("Verdana", 20));
+		title.setLayoutY(200);
+		title.setLayoutX(WIDTH / 2 - 100);
+
+		// instruction to play the game
+		Text subtext = new Text(
+				" - Press Start to simulate premade planets \n - Input an integer into the text field and press Random to simulate \n   n-random planets \n - Press exit to exit");
+		subtext.setFill(Color.BLACK);
+		subtext.setFont(Font.font("Verdana", 15));
+		subtext.setLayoutY(250);
+		subtext.setLayoutX(WIDTH / 2 - 180);
+
+		// sets the colour of the menu to be Grey
+		Rectangle r = new Rectangle(WIDTH, HEIGHT);
+		r.setFill(Color.LIGHTGREY);
+
 		// initial pane, shows game menu (e.g. start, exit, etc.)
 		Pane init = new Pane();
-		init.getChildren().add(start);
-		init.getChildren().add(canvas);
-		init.getChildren().add(exit);
-		init.getChildren().add(random);
+		init.getChildren().addAll(r, title, subtext, start, canvas, exit, random, input);
 
 		// root pane, shows simulation from premade
 		Pane root = new Pane();
-		root.getChildren().add(canvas);
+		root.getChildren().addAll(canvas, back);
 
 		Scene scene = new Scene(root);
 		Scene scene2 = new Scene(init, WIDTH, HEIGHT);
 
+		// title and scene
 		stage.setTitle("NBody Simulation");
-		// Set the scene for this stage
 		stage.setScene(scene2);
-		
-		root.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				;
-			}
-		});
 
 		// if start button is pressed starts simulation with premade
 		start.setOnAction(new EventHandler<ActionEvent>() {
@@ -116,16 +135,35 @@ public class GUI extends Application {
 			}
 		});
 
-		// if random button is pressed asks for number of planets to simulate and
-		// simulates them
+		// if random button is pressed after inputting a number
+		// simulates that many planets
 		random.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				stage.setScene(scene);
-				isRandom = true;
-
+				// checks if a number is put into the textfield, if nothing it put there or it
+				// isn't a number nothing happens
+				if (isInt(input.getText())) {
+					isRandom = true;
+					stage.setScene(scene);
+					bodyGen = new BodyGenerator(Integer.parseInt(input.getText()));
+				}
+				if (input.getText() == null) {
+					System.out.println("Please enter a number");
+				}
 			}
 		});
+
+		// if back is pressed goes back to previous scene(game menu) and initializes a new universe (so if start is pressed again it shows a new system based on random integer)
+		back.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				stage.setScene(scene2);
+				universe = new Universe();
+			}
+		});
+
+		// initializes the universe
+		universe = new Universe();
 
 		// setup a timer to be used for repeatedly redrawing the scene
 		oldTime = System.nanoTime();
@@ -148,6 +186,17 @@ public class GUI extends Application {
 
 		// Finally, show the primary stage
 		stage.show();
+	}
+
+	// checks if the input entered in the textfield is true
+	public boolean isInt(String message) {
+		try {
+			Integer.parseInt(message);
+			return true;
+		} catch (NumberFormatException e) {
+		}
+
+		return false;
 	}
 
 	public void drawSceneStart(GraphicsContext gc) {
@@ -210,6 +259,8 @@ public class GUI extends Application {
 
 	}
 
+	// on each update updates the positions of each of the planets in the randomly
+	// generated system
 	private void onUpdateRandom(double deltaT) {
 		elapsedTime += deltaT;
 		drawSceneRandom(gc);
